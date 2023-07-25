@@ -1,44 +1,65 @@
-import { Container, Typography, Button, Box } from '@mui/material';
+import { Container, Typography, Button, Box, TextField } from '@mui/material';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import getConfig from 'next/config';
 
 export default function Home() {
+  const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+  const PASSWORD = serverRuntimeConfig.PASSWORD || publicRuntimeConfig.PASSWORD;
+
+  const [inputPassword, setInputPassword] = useState('');
+  const [isPasswordMatched, setIsPasswordMatched] = useState(false);
+
+  useEffect(() => {
+    console.log(PASSWORD);
+    setIsPasswordMatched(inputPassword === process.env.NEXT_PUBLIC_PASSWORD);
+  }, [inputPassword, PASSWORD]);
+
   return (
     <Container maxWidth="md" className="flex flex-col items-center justify-center h-screen space-y-4">
       <Typography variant="h4" align="center" gutterBottom>
         Welcome to Movie and Drama Database
       </Typography>
-      <Box className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
-        <Link href="/movies" passHref>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            className="w-full text-black hover:text-white"
-          >
-            Movies
-          </Button>
-        </Link>
-        <Link href="/dramas" passHref>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            className="w-full text-black hover:text-white"
-          >
-            Dramas
-          </Button>
-        </Link>
-        <Link href="/books" passHref>
-          <Button
-            variant="contained"
-            color="warning"
-            size="large"
-            className="w-full text-black hover:text-white"
-          >
-            Books
-          </Button>
-        </Link>
-      </Box>
+      <TextField
+        label="Password"
+        type="password"
+        value={inputPassword}
+        onChange={(e) => setInputPassword(e.target.value)}
+      />
+      {isPasswordMatched && (
+        <Box className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+          <Link href="/movies" passHref>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              className="w-full text-black hover:text-white"
+            >
+              Movies
+            </Button>
+          </Link>
+          <Link href="/dramas" passHref>
+            <Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              className="w-full text-black hover:text-white"
+            >
+              Dramas
+            </Button>
+          </Link>
+          <Link href="/books" passHref>
+            <Button
+              variant="contained"
+              color="warning"
+              size="large"
+              className="w-full text-black hover:text-white"
+            >
+              Books
+            </Button>
+          </Link>
+        </Box>
+      )}
     </Container>
   );
 }
