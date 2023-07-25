@@ -1,18 +1,14 @@
 import { Container, Typography, Button, Box, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import getConfig from 'next/config';
 
 export default function Home() {
-  const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-  const PASSWORD = serverRuntimeConfig.PASSWORD || publicRuntimeConfig.PASSWORD;
-
   const [inputPassword, setInputPassword] = useState('');
   const [isPasswordMatched, setIsPasswordMatched] = useState(false);
 
   useEffect(() => {
     setIsPasswordMatched(inputPassword === process.env.NEXT_PUBLIC_PASSWORD);
-  }, [inputPassword, PASSWORD]);
+  }, [inputPassword]);
 
   return (
     <Container maxWidth="md" className="flex flex-col items-center justify-center h-screen space-y-4">
