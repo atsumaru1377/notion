@@ -11,7 +11,6 @@ export default function Home() {
   const [isPasswordMatched, setIsPasswordMatched] = useState(false);
 
   useEffect(() => {
-    console.log(PASSWORD);
     setIsPasswordMatched(inputPassword === process.env.NEXT_PUBLIC_PASSWORD);
   }, [inputPassword, PASSWORD]);
 
