@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Quagga from 'quagga';
 
 const WebcamCapture = dynamic(
-  () => import('../components/WebcamCapture'),
+  () => import('../Components/WebcamCapture'),
   { ssr: false }
 );
 
