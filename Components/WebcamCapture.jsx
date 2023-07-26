@@ -35,7 +35,8 @@ const WebcamCapture = ({ onCapture }) => {
     };
   }, []);
 
-  return <video ref={videoRef} />;
+  return <video ref={videoRef} autoPlay playsInline />;
+
 };
 
 export default WebcamCapture;
