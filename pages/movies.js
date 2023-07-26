@@ -39,23 +39,25 @@ export default function Movies() {
   };
 
   return (
-    <Container className="mt-8">
-      <TextField
-        label="Search"
-        variant="outlined"
-        fullWidth
-        value={search}
-        onChange={handleSearchChange}
-        className="mb-4"
-      />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSearch}
-        className="mb-4 text-black hover:text-white"
-      >
-        Search
-      </Button>
+    <div className="p-4 flex flex-col h-full gap-y-4">
+      <div className="flex gap-x-4 mb-4">
+        <TextField
+          label="Search"
+          variant="outlined"
+          fullWidth
+          value={search}
+          onChange={handleSearchChange}
+          className=""
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSearch}
+          className="text-black hover:text-white"
+        >
+          Search
+        </Button>
+      </div>
       <Grid container spacing={3}>
         {results.map((movie) => (
           <Grid item xs={12} sm={6} md={4} key={movie.id}>
@@ -100,11 +102,11 @@ export default function Movies() {
           variant="contained"
           color="info"
           size="large"
-          className="mt-4 hover:text-white text-black"
+          className="hover:text-white text-black"
         >
           Go back
         </Button>
       </Link>
-    </Container>
+    </div>
   );
 }

@@ -11,18 +11,19 @@ export default function Home() {
   }, [inputPassword]);
 
   return (
-    <Container className="flex flex-col items-center justify-center h-screen space-y-4">
+    <div className="flex flex-col items-center justify-center h-screen space-y-4 px-4">
       <Typography variant="h4" align="center" gutterBottom>
-        Welcome to Movie and Drama Database
+        Add Data to My Notion Library
       </Typography>
       <TextField
         label="Password"
         type="password"
         value={inputPassword}
+        className='w-full'
         onChange={(e) => setInputPassword(e.target.value)}
       />
       {isPasswordMatched && (
-        <Box className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+        <Box className="flex flex-row items-center justify-between w-full">
           <Link href="/movies" passHref>
             <Button
               variant="contained"
@@ -55,6 +56,6 @@ export default function Home() {
           </Link>
         </Box>
       )}
-    </Container>
+    </div>
   );
 }
