@@ -1,21 +1,25 @@
-// components/WebcamCapture.js
-import React, { useCallback, useRef } from "react";
-import Webcam from "react-webcam";
+import { useEffect, useRef } from "react";
 
-const WebcamCapture = ({ onCapture }) => {
-  const webcamRef = useRef(null);
+const Capture = () => {
+  const videoRef = useRef();
 
-  const capture = useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    onCapture(imageSrc);
-  }, [webcamRef, onCapture]);
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({
+        video: { facingMode: "environment" }, // 外側のカメラを使用
+        audio: false, // 音声は不要なので false
+      })
+      .then((stream) => {
+        let video = videoRef.current;
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch((err) => {
+        console.log("An error occurred! " + err);
+      });
+  }, []);
 
-  return (
-    <>
-      <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-      <button onClick={capture}>Capture photo</button>
-    </>
-  );
+  return <video ref={videoRef} />;
 };
 
-export default WebcamCapture;
+export default Capture;
