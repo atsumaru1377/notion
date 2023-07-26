@@ -161,7 +161,7 @@ const writeDramaDatabase = async (id) => {
                     .map((v) => ({name : v.name, color: "green"}))
         },
         Duration : {
-            number: detail.episode_run_time[0]
+            number: detail.episode_run_time[0] || 0
         },
         Type : {
             select : {
