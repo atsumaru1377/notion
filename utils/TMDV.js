@@ -35,13 +35,13 @@ const fetchMovieTitle = async (id) => {
   try {
     const res = await fetch(`/api/get_movie_title?id=${id}`);
     const data = await res.json();
-    const titleObj = data.titles.find((v) => v.iso_3166_1 === "JP").title;
+    const titleObj = data.titles.find((v) => v.iso_3166_1 === "JP");
 
     if (!titleObj) {
       return ""
     }
 
-    return titleObj;
+    return titleObj.title;
 
   } catch (error) {
     console.error(`Failed to fetch movie title ${error}`);

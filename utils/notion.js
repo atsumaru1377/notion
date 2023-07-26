@@ -61,9 +61,9 @@ const writeMovieDatabase = async (id) => {
                     .map((v) => ({name : v.name}))
         },
         Series : {
-            select: {
+            select: detail.belongs_to_collection ? {
                 name: detail.belongs_to_collection.name
-            }
+            } : null
         },
         Watched : {
             checkbox: true
