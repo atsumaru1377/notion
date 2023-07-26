@@ -107,60 +107,11 @@ const fetchAllSeasonData = async (id, n) => {
     const season_i = await res.json();
     data.push(
       {
-        object: "block",
-        type: "toggle",
-        toggle:{
-          rich_text: [
-            {
-              type: "text",
-              text: {
-                content: season_i.name
-              }
-            }
-          ],
-          children: [
-            {
-              object: "block",
-              type: "image",
-              image: {
-                type: "external",
-                external: {
-                  url: `https://image.tmdb.org/t/p/original${season_i.poster_path}`
-                }
-              }
-            },
-            {
-              object: "block",
-              type: "paragraph",
-              paragraph: {
-                rich_text: [
-                  {
-                    type: "text",
-                    text: {
-                      content: season_i.air_date
-                    }
-                  }
-                ]
-              }
-            },
-            ... season_i.episodes.map((v) => (
-              {
-                object: "block",
-                type: "numbered_list_item",
-                numbered_list_item: {
-                  rich_text: [
-                    {
-                      type: "text",
-                      text: {
-                        content: v.name
-                      }
-                    }
-                  ]
-                }
-              }
-            ))
-          ]
-        },
+        name: season_i.name,
+        air_date: season_i.air_date,
+        num_episode: season_i.episodes.length,
+        episodes: season_i.episodes.map((v) => ({ name: v.name })),
+        poster_path: season_i.poster_path,
       }
     )
   }

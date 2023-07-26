@@ -191,7 +191,7 @@ const writeDramaDatabase = async (id) => {
     };
     const poster = `https://image.tmdb.org/t/p/original${detail.poster_path}`
     const cover = `https://image.tmdb.org/t/p/original${detail.backdrop_path}`
-    const seasonData = await fetchAllSeasonData(id, detail.number_of_seasons);
+    const seasons = await fetchAllSeasonData(id, detail.number_of_seasons);
     const children = [
         {
             object: "block",
@@ -203,17 +203,15 @@ const writeDramaDatabase = async (id) => {
                 }
             }
         },
-        ...seasonData
     ];
 
-    console.log(children)
     try {
-        const res = await fetch(`/api/write_movie_database`, {
+        const res = await fetch(`/api/write_drama_database`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ properties, poster, cover, children })
+            body: JSON.stringify({ properties, cover, children, seasons })
         });
         console.log(res);
         return;
