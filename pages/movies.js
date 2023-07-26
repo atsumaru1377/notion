@@ -39,7 +39,7 @@ export default function Movies() {
   };
 
   return (
-    <Container maxWidth="md" className="mt-8">
+    <Container className="mt-8">
       <TextField
         label="Search"
         variant="outlined"
@@ -52,7 +52,7 @@ export default function Movies() {
         variant="contained"
         color="primary"
         onClick={handleSearch}
-        className="mb-4"
+        className="mb-4 text-black hover:text-white"
       >
         Search
       </Button>
@@ -100,7 +100,7 @@ export default function Movies() {
           variant="contained"
           color="info"
           size="large"
-          className="mt-4"
+          className="mt-4 hover:text-white text-black"
         >
           Go back
         </Button>

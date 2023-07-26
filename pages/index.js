@@ -11,7 +11,7 @@ export default function Home() {
   }, [inputPassword]);
 
   return (
-    <Container maxWidth="md" className="flex flex-col items-center justify-center h-screen space-y-4">
+    <Container className="flex flex-col items-center justify-center h-screen space-y-4">
       <Typography variant="h4" align="center" gutterBottom>
         Welcome to Movie and Drama Database
       </Typography>
