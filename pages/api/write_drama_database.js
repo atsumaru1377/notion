@@ -112,10 +112,10 @@ export default async function handler(req, res) {
                     ))
                 ]
             });
-            res.status(200).json({ message: 'Success' });
         } catch(error) {
             console.error("Failed to write season data", error);
             res.status(500).json({ error: 'Failed to write data / Write Season Data' });
         }
     }
+    res.status(200).json({ message: 'Success' });
 };
