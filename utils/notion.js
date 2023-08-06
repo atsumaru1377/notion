@@ -105,7 +105,8 @@ const writeMovieDatabase = async (id) => {
             body: JSON.stringify({ properties, poster, cover, children }),
         });
         console.log(res);
-        return;
+        const data = await res.json();
+        return data;
     } catch (error) {
         console.error(`Failed to write movie data ${error}`);
         throw new Error(error);
@@ -205,6 +206,8 @@ const writeDramaDatabase = async (id) => {
         },
     ];
 
+    console.log("ready to write drama data")
+
     try {
         const res = await fetch(`/api/write_drama_database`, {
             method: 'POST',
@@ -214,7 +217,11 @@ const writeDramaDatabase = async (id) => {
             body: JSON.stringify({ properties, cover, children, seasons })
         });
         console.log(res);
-        return;
+        if (!res.ok) {
+            throw new Error(`Failed to fetch, status: ${res.status}`);
+        }
+        const data = await res.json();
+        return data;
     } catch (error) {
         console.error(`Failed to write movie data ${error}`);
         throw new Error(error);

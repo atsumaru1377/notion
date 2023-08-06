@@ -101,22 +101,30 @@ const fetchDramaTitle = async (id) => {
 
 
 const fetchAllSeasonData = async (id, n) => {
-  const data = [];
-  for (let i = 1; i <= n; i++) {
-    const res = await fetch(`/api/get_season_data?id=${id}&i=${i}`);
-    const season_i = await res.json();
-    data.push(
-      {
-        name: season_i.name,
-        air_date: season_i.air_date,
-        num_episode: season_i.episodes.length,
-        episodes: season_i.episodes.map((v) => ({ name: v.name })),
-        poster_path: season_i.poster_path,
-      }
-    )
+  try {
+    const promises = [];
+    for (let i = 1; i <= n; i++) {
+      promises.push(fetch(`/api/get_season_data?id=${id}&i=${i}`).then(res => res.json()));
+    }
+    const seasons = await Promise.all(promises);
+
+    const data = seasons.map(season_i => ({
+      name: season_i.name,
+      air_date: season_i.air_date,
+      num_episode: season_i.episodes.length,
+      episodes: season_i.episodes.map((v) => ({ name: v.name })),
+      poster_path: season_i.poster_path,
+    }));
+
+    console.log(data)
+
+    return data;
+  } catch (error) {
+    console.error(`Failed to fetch all season data ${error}`);
+    throw new Error(error);
   }
-  return data;
 }
+
 
 
 export {

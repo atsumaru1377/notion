@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, TextField, Button, Grid, Card, CardContent, Typography, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Container, TextField, Button, Grid, Card, CardContent, Typography, Dialog, DialogActions, DialogContent, DialogTitle, CircularProgress } from '@mui/material';
 import Image from 'next/image';
 import Link from 'next/link';
 import { fetchDramaTitle, fetchDramaCreditsData, fetchDramaData, fetchDramaDetailData} from '../utils/TMDV';
@@ -10,6 +10,8 @@ export default function Dramas() {
   const [results, setResults] = useState([]);
   const [selectedDrama, setSelectedDrama] = useState(null);
   const [open, setOpen] = useState(false);
+  const [writing, setWriting] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -30,12 +32,26 @@ export default function Dramas() {
 
   const handleClose = () => {
     setOpen(false);
+    setIsError(false);
   };
 
   const handleAddToDatabase = async () => {
     // replace with actual API call
-    writeDramaDatabase(selectedDrama.id);
-    handleClose();
+    console.log("writing to database")
+    setWriting(true);
+    setIsError(false);
+    try {
+      const response = await writeDramaDatabase(selectedDrama.id);
+      setIsError(false);
+      console.log(response)
+    } catch (error) {
+      console.error(error);
+      console.error("Failed to write drama data");
+      setIsError(true);
+    }
+    console.log("done writing to database")
+    setWriting(false);
+    setOpen(isError);
   };
 
   return (
@@ -91,8 +107,11 @@ export default function Dramas() {
             </Typography>
           </DialogContent>
           <DialogActions>
+            {writing && <CircularProgress />}
+            {isError && <Typography color="error">Error adding to database</Typography>}
             <Button onClick={handleAddToDatabase} className="text-black">
-              Add to Database
+              {!isError && !writing && "Add to database"}
+              {isError && "Retry"}
             </Button>
           </DialogActions>
         </Dialog>

@@ -26,6 +26,7 @@ export default async function handler(req, res) {
         console.log(response);
     } catch (error) {
         console.error("Failed to write movie data", error);
+        res.status(500).json({ error: 'Failed to write data / Make Page' });
     }
 
     let seasonDatabaseId = "";
@@ -55,7 +56,9 @@ export default async function handler(req, res) {
         seasonDatabaseId = response.id;
     } catch(error) {
         console.error("Failed to make season database", error);
+        res.status(500).json({ error: 'Failed to write data / Make Season Database' });
     }
+
 
     for (let i = 0; i < seasons.length; i++) {
         try {
@@ -81,7 +84,7 @@ export default async function handler(req, res) {
                     },
                 },
                 children: [
-                    {
+                    ...(seasons[i].poster_path ? [{
                         object: "block",
                         type: "image",
                         image: {
@@ -90,7 +93,7 @@ export default async function handler(req, res) {
                                 url: "https://image.tmdb.org/t/p/original" + seasons[i].poster_path
                             }
                         }
-                    },
+                    }] : []),
                     ...seasons[i].episodes.map((v) => (
                         {
                             object: "block",
@@ -109,23 +112,10 @@ export default async function handler(req, res) {
                     ))
                 ]
             });
+            res.status(200).json({ message: 'Success' });
         } catch(error) {
             console.error("Failed to write season data", error);
+            res.status(500).json({ error: 'Failed to write data / Write Season Data' });
         }
-
-    }
-    
-    try {
-        const response = await notion.databases.query({
-            database_id: seasonDatabaseId,
-            sorts: [
-                {
-                    property: "Air Date",
-                    direction: "ascending"
-                }
-            ]
-        });
-    } catch(error) {
-        console.error("Failed to sort season data", error);
     }
 };
