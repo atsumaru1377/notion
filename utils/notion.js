@@ -228,7 +228,95 @@ const writeDramaDatabase = async (id) => {
     }
 }
 
+const writePapersDatabase = async (data) => {
+    const properties = {
+        Title : {
+            title: [
+                {
+                    text: {
+                        content: data.Title
+                    }
+                }
+            ]
+        },
+        Authors : {
+            rich_text: [
+                {
+                    text: {
+                        content: data.Authors
+                    }
+                }
+            ]
+        },
+        Field : {
+            multi_select: data.Field.map((v) => ({name : v}))
+        },
+        Conference : {
+            multi_select: data.Conference.map((v) => ({name : v}))
+        },
+        Year : {
+            number: Number(data.Year)
+        },
+        doi : {
+            url: `https://doi.org/${data.doi}`
+        },
+        pdf : {
+            files : [
+                {
+                    name: data.Title,
+                    type: "external",
+                    external: {
+                        url: data.pdf
+                    }
+                }
+            ]
+        },
+        BibTex : {
+            rich_text: [
+                {
+                    text: {
+                        content: data.BibTex || ""
+                    }
+                }
+            ]
+        },
+        Priority : {
+            select: {
+                name: data.Priority
+            }
+        },
+        Genres : {
+            multi_select: data.Genres.map((v) => ({name : v}))
+        },
+    };
+    if (data.ReadDate) {
+        properties.ReadDate = {
+            date: {
+                start: data.ReadDate
+            }
+        }
+    }
+    console.log(properties);
+
+    try {
+        const res = await fetch(`/api/write_paper_database`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ properties }),
+        });
+        console.log(res);
+        return res.ok;
+    } catch (error) {
+        console.error(`Failed to write paper data ${error}`);
+        throw new Error(error);
+    }
+}
+
+
 export {
     writeMovieDatabase,
     writeDramaDatabase,
+    writePapersDatabase
 }
